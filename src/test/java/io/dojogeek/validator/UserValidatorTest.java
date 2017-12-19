@@ -1,11 +1,10 @@
 package io.dojogeek.validator;
 
-import io.dojogeek.dtos.DtoUser;
+import io.dojogeek.dtos.UserDto;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -15,39 +14,56 @@ import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
 public class UserValidatorTest {
 
-    @Test
-    public void testUserValidator_correctDtoUser() {
+    private UserDto user;
 
-        DtoUser dtoUser = createDtoUser(28, new Date(), "Jacob", "Programmer");
-
-        UserValidator userValidator = new UserValidator(dtoUser);
-        boolean isValidUser = userValidator.validate();
-
-        assertTrue(isValidUser);
-
+    @Before
+    public void setup() {
+        user = new UserDto();
+        user.setAge(19);
+        user.setName("Jacob");
     }
 
     @Test
-    public void testUserValidator_withName_too_long() {
+    public void testUserValidator_errorForInvalidAge() {
+        user.setAge(0);
 
-        DtoUser dtoUser = createDtoUser(28, new Date(), "INCENT LUC MICHEL JULES", "Programmer");
-
-        UserValidator userValidator = new UserValidator(dtoUser);
-        boolean isValidUser = userValidator.validate();
-
-        assertFalse(isValidUser);
-        assertEquals("The name is too long", userValidator.getErrorMessage());
-
+        UserValidator validator = new UserValidator(user);
+        assertFalse(validator.validate());
+        assertEquals("The age must be greater that 18 years old.", validator.getErrorMessages().get(0));
     }
 
-    private DtoUser createDtoUser(int age, Date birthDate, String name, String ocupation) {
-
-        DtoUser user = new DtoUser();
-        user.setAge(age);
-        user.setBirthDate(birthDate);
-        user.setName(name);
-        user.setOcupation(ocupation);
-
-        return user;
+    @Test
+    public void testUserValidator_validAge() {
+        UserValidator validator = new UserValidator(user);
+        assertTrue(validator.validate());
     }
+
+    @Test
+    public void testUserValidator_emptyName() {
+        user.setName("");
+
+        UserValidator validator = new UserValidator(user);
+        assertFalse(validator.validate());
+        assertEquals("The name is required.", validator.getErrorMessages().get(0));
+    }
+
+    @Test
+    public void testUserValidator_tooLongName() {
+        user.setName("Lorem ipsum dolor sit amet, consectetur adipiscing elit");
+
+        UserValidator validator = new UserValidator(user);
+        assertFalse(validator.validate());
+        assertEquals("The name is too long, the max value is 15.", validator.getErrorMessages().get(0));
+    }
+
+    @Test
+    public void testUserValidator_invalidFieldValues() {
+        user.setName("Lorem ipsum dolor sit amet");
+        user.setAge(0);
+
+        UserValidator validator = new UserValidator(user);
+        assertFalse(validator.validate());
+        assertEquals(2, validator.getErrorMessages().size());
+    }
+
 }

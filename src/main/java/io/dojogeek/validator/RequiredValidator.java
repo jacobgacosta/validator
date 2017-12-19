@@ -5,8 +5,8 @@ package io.dojogeek.validator;
  */
 public class RequiredValidator implements DataValidator {
 
-    private String errorMessage;
     private static final String EMPTY_VALUE = "";
+    private String errorMessage;
     private Object valueToValidate;
 
     private RequiredValidator(RequiredValidatorBuilder requiredValidatorBuilder) {
@@ -21,7 +21,6 @@ public class RequiredValidator implements DataValidator {
 
     @Override
     public boolean isValid() {
-
         if (valueToValidate == null || valueToValidate.equals(EMPTY_VALUE)) {
             return false;
         }
@@ -29,10 +28,9 @@ public class RequiredValidator implements DataValidator {
         return true;
     }
 
-
     public static class RequiredValidatorBuilder {
 
-        private String errorMessage = "No error messages";
+        private String errorMessage;
         private Object valueToValidate;
 
         public RequiredValidatorBuilder errorMessage(String errorMessage) {
@@ -50,4 +48,5 @@ public class RequiredValidator implements DataValidator {
         }
 
     }
+
 }

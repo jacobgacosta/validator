@@ -26,7 +26,6 @@ public class LengthValidator implements DataValidator {
 
     @Override
     public boolean isValid() {
-
         if (valueToValidate == null) {
             return false;
         } else if (equalLength != null && !equalLength.equals(valueToValidate.length())) {
@@ -36,24 +35,11 @@ public class LengthValidator implements DataValidator {
         } else if (maxLength != null && valueToValidate.length() > maxLength) {
             return false;
         }
-
-//        if (valueToValidate == null) {
-//            return false;
-//        } else if (minLength == maxLength) {
-//            return valueToValidate.length() == minLength;
-//        } else if (minLength == 0 && valueToValidate.length() > maxLength) {
-//            return false;
-//        } else if (maxLength == 0 && valueToValidate.length() < minLength) {
-//            return false;
-//        } else if (minLength != 0 && valueToValidate.length() <
-//                minLength && maxLength != 0 && valueToValidate.length() > maxLength) {
-//            return false;
-//        }
-
         return true;
     }
 
     public static class LengthValidatorBuilder {
+
         private Integer maxLength;
         private Integer minLength;
         private Integer equalLength;

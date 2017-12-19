@@ -22,7 +22,6 @@ public class RangeValidator implements DataValidator {
 
     @Override
     public boolean isValid() {
-
         if (valueToValidate == null) {
             return false;
         } else if (equalTo != null && !equalTo.equals(valueToValidate)) {
@@ -40,7 +39,6 @@ public class RangeValidator implements DataValidator {
     public String getErrorMessage() {
         return errorMessage;
     }
-
 
     public static class RangeValidatorBuilder {
 
@@ -78,6 +76,7 @@ public class RangeValidator implements DataValidator {
         public RangeValidator build() {
             return new RangeValidator(lessThat, greaterThan, equalTo, valueToValidate, errorMessage);
         }
+
     }
 
 }

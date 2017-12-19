@@ -1,5 +1,6 @@
 package io.dojogeek.validator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,27 +8,27 @@ import java.util.List;
  */
 public abstract class Validator {
 
-    private String errorMessage;
+    private List<String> errorMessages = new ArrayList<>();
 
     protected abstract List<DataValidator> getValidations();
 
     public boolean validate() {
-
         List<DataValidator> dataValidatorList = getValidations();
 
-        for (DataValidator dataValidator : dataValidatorList) {
-            boolean isValid = dataValidator.isValid();
+        boolean isValid = true;
 
-            if (!isValid) {
-                errorMessage = dataValidator.getErrorMessage();
-                return false;
+        for (DataValidator dataValidator : dataValidatorList) {
+            if (! dataValidator.isValid()) {
+                errorMessages.add(dataValidator.getErrorMessage());
+                isValid = false;
             }
         }
 
-        return true;
+        return isValid;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public List<String> getErrorMessages() {
+        return errorMessages;
     }
+
 }

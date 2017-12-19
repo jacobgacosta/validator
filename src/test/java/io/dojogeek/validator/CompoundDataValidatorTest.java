@@ -1,5 +1,6 @@
 package io.dojogeek.validator;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -15,69 +16,37 @@ import static org.powermock.api.mockito.PowerMockito.spy;
 @RunWith(PowerMockRunner.class)
 public class CompoundDataValidatorTest {
 
-    private CompoundDataValidator compoundDataValidator = new CompoundDataValidator();
+    private CompoundValidator compoundDataValidator;
 
-    @Test
-    public void testCompoundDataValidator_correctValidations() {
-
-        LengthValidator lengthValidator = spy(new LengthValidator.LengthValidatorBuilder().maxLength(30).
-                valueToValidate("fuck yhea!").errorMessage("this a errror message!").build());
-
-        RequiredValidator requiredValidator = spy(new RequiredValidator.RequiredValidatorBuilder().
-                valueToValidate("fuck yhea!").build());
-
-        compoundDataValidator.addDataValidator(lengthValidator);
-        compoundDataValidator.addDataValidator(requiredValidator);
-
-        boolean isValid = compoundDataValidator.isValid();
-
-        assertTrue(isValid);
-
-        verify(lengthValidator).isValid();
-        verify(requiredValidator).isValid();
-    }
-
-
-    @Test
-    public void testCompoundDataValidator_withLengthValidatorFail() {
-
-        LengthValidator lengthValidator = spy(new LengthValidator.LengthValidatorBuilder().maxLength(7).
-                valueToValidate("fuck yhea!").errorMessage("this a errror message!").build());
-
-        RequiredValidator requiredValidator = spy(new RequiredValidator.RequiredValidatorBuilder().
-                valueToValidate("This a value").build());
-
-        compoundDataValidator.addDataValidator(lengthValidator);
-        compoundDataValidator.addDataValidator(requiredValidator);
-
-        boolean isValid = compoundDataValidator.isValid();
-
-        assertFalse(isValid);
-
-        verify(lengthValidator).isValid();
-        verify(requiredValidator, never()).isValid();
-
+    @Before
+    public void setup() {
+        compoundDataValidator = new CompoundValidator();
     }
 
     @Test
-    public void testCompoundDataValidator_withLengthValidatorFailAndErrorMessage() {
+    public void testCompoundValidator_correctValidations() {
+        compoundDataValidator.addDataValidator(new LengthValidator.LengthValidatorBuilder()
+                .maxLength(30)
+                .valueToValidate("fuck yeah!")
+                .errorMessage("this a error message!").build())
+                .addDataValidator(new RequiredValidator.RequiredValidatorBuilder()
+                        .valueToValidate("fuck yeah!")
+                        .build());
 
-        LengthValidator lengthValidator = spy(new LengthValidator.LengthValidatorBuilder().maxLength(7).
-                valueToValidate("fuck yhea!").errorMessage("this a errror message!").build());
-
-        RequiredValidator requiredValidator = spy(new RequiredValidator.RequiredValidatorBuilder().
-                valueToValidate("This a value").build());
-
-        compoundDataValidator.addDataValidator(lengthValidator);
-        compoundDataValidator.addDataValidator(requiredValidator);
-
-        boolean isValid = compoundDataValidator.isValid();
-
-        assertFalse(isValid);
-        assertEquals("this a errror message!", compoundDataValidator.getErrorMessage());
-
-        verify(lengthValidator).isValid();
-        verify(requiredValidator, never()).isValid();
+        assertTrue(compoundDataValidator.isValid());
     }
 
+    @Test
+    public void testCompoundValidator_withLengthValidatorFail() {
+        compoundDataValidator.addDataValidator(new LengthValidator.LengthValidatorBuilder().maxLength(7)
+                .valueToValidate("fuck yeah!")
+                .errorMessage("this a error message!")
+                .build())
+                .addDataValidator(new RequiredValidator.RequiredValidatorBuilder()
+                        .valueToValidate("This a value")
+                        .build());
+
+        assertFalse(compoundDataValidator.isValid());
+        assertEquals("this a error message!", compoundDataValidator.getErrorMessage());
+    }
 }

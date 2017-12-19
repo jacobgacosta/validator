@@ -6,21 +6,19 @@ import java.util.List;
 /**
  * Created by jgacosta on 6/01/17.
  */
-public class CompoundDataValidator implements DataValidator {
+public class CompoundValidator implements DataValidator {
 
     private List<DataValidator> dataValidatorList = new ArrayList<>();
     private String errorMessage;
 
-    public void addDataValidator(DataValidator dataValidator) {
+    public CompoundValidator addDataValidator(DataValidator dataValidator) {
         dataValidatorList.add(dataValidator);
+        return this;
     }
-
 
     @Override
     public boolean isValid() {
-
         for (DataValidator dataValidator : dataValidatorList) {
-
             boolean isValid = dataValidator.isValid();
 
             if (!isValid) {

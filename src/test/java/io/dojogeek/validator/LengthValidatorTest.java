@@ -14,7 +14,6 @@ public class LengthValidatorTest {
 
     @Test
     public void testLength_correctMaxLength() {
-
         int maxLength = 15;
         String value = "This a test";
 
@@ -27,7 +26,6 @@ public class LengthValidatorTest {
 
     @Test
     public void testLength_correctMinLength() {
-
         int minLength = 4;
         String value = "Hi!!";
 
@@ -39,7 +37,6 @@ public class LengthValidatorTest {
 
     @Test
     public void testLength_correctMinAndMaxLength() {
-
         int minLength = 4;
         int maxLength = 10;
         String value = "Fucking!!!";
@@ -52,7 +49,6 @@ public class LengthValidatorTest {
 
     @Test
     public void testLength_zeroMinAndMaxLength() {
-
         int minLength = 0;
         int maxLength = 0;
         String value = "Mi mama me mima";
@@ -65,7 +61,6 @@ public class LengthValidatorTest {
 
     @Test
     public void testLength_incorrectConditionWithErrorMessage() {
-
         int maxLength = 7;
         String value = "Hi I love my chaparrita";
         String message = "The value " + value + "is too long";
@@ -80,7 +75,6 @@ public class LengthValidatorTest {
 
     @Test
     public void testLength_nullValue() {
-
         String value = null;
 
         boolean isValid = new LengthValidator.LengthValidatorBuilder().valueToValidate(value).build().isValid();
@@ -90,7 +84,6 @@ public class LengthValidatorTest {
 
     @Test
     public void testLength_correctEqualLength() {
-
         int equal = 4;
         String value = "Hi!!";
 
@@ -102,7 +95,6 @@ public class LengthValidatorTest {
 
     @Test
     public void testLength_allCorrectLengths() {
-
         int equal = 4;
         int minLength = 2;
         int maxLength = 10;

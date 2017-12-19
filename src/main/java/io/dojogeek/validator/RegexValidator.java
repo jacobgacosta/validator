@@ -18,7 +18,6 @@ public class RegexValidator implements DataValidator {
     }
 
     public boolean isValid() {
-
         if (valueToValidate == null || valueToValidate.isEmpty()) {
             return false;
         }
@@ -32,6 +31,7 @@ public class RegexValidator implements DataValidator {
     public String getErrorMessage() {
         return errorMessage;
     }
+
 
     public static class RegexValidatorBuilder {
 

@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * Created by jgacosta on 6/01/17.
  */
-public class DtoUser {
+public class UserDto {
 
     private String name;
     private int age;

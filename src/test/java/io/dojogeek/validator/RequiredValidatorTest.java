@@ -14,7 +14,6 @@ public class RequiredValidatorTest {
 
     @Test
     public void testRequiredValue_correctValue() {
-
         String value = "Shit";
 
         boolean isValid = new RequiredValidator.RequiredValidatorBuilder().
@@ -25,7 +24,6 @@ public class RequiredValidatorTest {
 
     @Test
     public void testRequiredValue_emptyValue() {
-
         String value = "";
 
         boolean isValid = new RequiredValidator.RequiredValidatorBuilder().
@@ -36,24 +34,20 @@ public class RequiredValidatorTest {
 
     @Test
     public void testRequiredValue_nullValue() {
-
         String value = null;
 
         boolean isValid = new RequiredValidator.RequiredValidatorBuilder().
                 valueToValidate(value).build().isValid();
 
         assertFalse(isValid);
-
     }
 
     @Test
     public void testRequiredValue_incorrectValueWithErrorMessage() {
-
         String[] incorrectValues = {null, ""};
         String errorMessage = "The value is required";
 
         for (String value : incorrectValues) {
-
             RequiredValidator requiredValidator = new RequiredValidator.RequiredValidatorBuilder().
                     errorMessage(errorMessage).valueToValidate(value).build();
 
@@ -62,6 +56,5 @@ public class RequiredValidatorTest {
             assertFalse(isValid);
             assertEquals(errorMessage, requiredValidator.getErrorMessage());
         }
-
     }
 }
