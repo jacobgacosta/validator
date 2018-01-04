@@ -1,34 +1,45 @@
 package io.dojogeek.validator;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by jgacosta on 12/01/17.
  */
 public abstract class Validator {
 
-    private List<String> errorMessages = new ArrayList<>();
+    private Map<String, String> errorMessages = new HashMap<>();
 
-    protected abstract List<DataValidator> getValidations();
+    protected abstract Map<String, DataValidator> getValidations();
 
-    public boolean validate() {
-        List<DataValidator> dataValidatorList = getValidations();
+    private boolean validate() {
+        Map<String, DataValidator> dataValidatorList = getValidations();
 
-        boolean isValid = true;
+        this.clearStackErrors();
 
-        for (DataValidator dataValidator : dataValidatorList) {
-            if (! dataValidator.isValid()) {
-                errorMessages.add(dataValidator.getErrorMessage());
-                isValid = false;
+        for (Map.Entry<String, DataValidator> entry : dataValidatorList.entrySet()) {
+            if (! entry.getValue().isValid()) {
+                errorMessages.put(entry.getKey(), entry.getValue().getErrorMessage());
             }
         }
 
-        return isValid;
+        return errorMessages.isEmpty();
     }
 
-    public List<String> getErrorMessages() {
-        return errorMessages;
+    public String getErrorFor(String name) {
+        return errorMessages.get(name);
+    }
+
+    public boolean isValid(String name) {
+        return ! errorMessages.containsKey(name);
+    }
+
+    public boolean isValid() {
+        return this.validate();
+    }
+
+    private void clearStackErrors() {
+        errorMessages.clear();
     }
 
 }

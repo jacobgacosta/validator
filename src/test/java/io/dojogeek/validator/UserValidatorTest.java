@@ -28,14 +28,13 @@ public class UserValidatorTest {
         user.setAge(0);
 
         UserValidator validator = new UserValidator(user);
-        assertFalse(validator.validate());
-        assertEquals("The age must be greater that 18 years old.", validator.getErrorMessages().get(0));
+        assertFalse(validator.isValid());
     }
 
     @Test
     public void testUserValidator_validAge() {
         UserValidator validator = new UserValidator(user);
-        assertTrue(validator.validate());
+        assertTrue(validator.isValid());
     }
 
     @Test
@@ -43,8 +42,7 @@ public class UserValidatorTest {
         user.setName("");
 
         UserValidator validator = new UserValidator(user);
-        assertFalse(validator.validate());
-        assertEquals("The name is required.", validator.getErrorMessages().get(0));
+        assertFalse(validator.isValid());
     }
 
     @Test
@@ -52,8 +50,7 @@ public class UserValidatorTest {
         user.setName("Lorem ipsum dolor sit amet, consectetur adipiscing elit");
 
         UserValidator validator = new UserValidator(user);
-        assertFalse(validator.validate());
-        assertEquals("The name is too long, the max value is 15.", validator.getErrorMessages().get(0));
+        assertFalse(validator.isValid());
     }
 
     @Test
@@ -62,8 +59,11 @@ public class UserValidatorTest {
         user.setAge(0);
 
         UserValidator validator = new UserValidator(user);
-        assertFalse(validator.validate());
-        assertEquals(2, validator.getErrorMessages().size());
+        assertFalse(validator.isValid());
+        assertFalse(validator.isValid(UserValidator.NAME));
+        assertEquals("The name is too long, the max value is 15.", validator.getErrorFor(UserValidator.NAME));
+        assertFalse(validator.isValid(UserValidator.AGE));
+        assertEquals("The age must be greater that 18 years old.", validator.getErrorFor(UserValidator.AGE));
     }
 
 }

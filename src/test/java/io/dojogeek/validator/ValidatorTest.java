@@ -4,10 +4,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import static junit.framework.TestCase.*;
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created by jgacosta on 12/01/17.
@@ -19,10 +20,9 @@ public class ValidatorTest {
     public void testValidator_failValidation() {
         Validator validator = new Validator() {
             @Override
-            protected List<DataValidator> getValidations() {
-                List<DataValidator> validators = new ArrayList<>();
-
-                validators.add(new RequiredValidator.RequiredValidatorBuilder()
+            protected Map<String, DataValidator> getValidations() {
+                Map<String, DataValidator> validators = new HashMap<>();
+                validators.put("fieldName", new RequiredValidator.RequiredValidatorBuilder()
                         .valueToValidate("")
                         .errorMessage("The value must be not empty.")
                         .build());
@@ -31,18 +31,16 @@ public class ValidatorTest {
             }
         };
 
-        assertFalse(validator.validate());
-        assertEquals("The value must be not empty.", validator.getErrorMessages().get(0));
+        assertFalse(validator.isValid());
     }
 
     @Test
     public void testValidator_successValidation() {
         Validator validator = new Validator() {
             @Override
-            protected List<DataValidator> getValidations() {
-                List<DataValidator> validators = new ArrayList<>();
-
-                validators.add(new RequiredValidator.RequiredValidatorBuilder()
+            protected Map<String, DataValidator> getValidations() {
+                Map<String, DataValidator> validators = new HashMap<>();
+                validators.put("fieldName", new RequiredValidator.RequiredValidatorBuilder()
                         .valueToValidate("Jacob Guzman Acosta")
                         .errorMessage("The value must be not empty.")
                         .build());
@@ -51,8 +49,7 @@ public class ValidatorTest {
             }
         };
 
-        assertTrue(validator.validate());
-        assertEquals(0, validator.getErrorMessages().size());
+        assertTrue(validator.isValid());
     }
 
 }

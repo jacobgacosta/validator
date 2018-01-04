@@ -2,13 +2,16 @@ package io.dojogeek.validator;
 
 import io.dojogeek.dtos.UserDto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by norveo on 12/18/17.
  */
 public class UserValidator extends Validator {
+
+    public static String NAME = "name";
+    public static String AGE = "age";
 
     private UserDto user;
 
@@ -17,14 +20,14 @@ public class UserValidator extends Validator {
     }
 
     @Override
-    protected List<DataValidator> getValidations() {
-        List<DataValidator> validatorList = new ArrayList<>();
-        validatorList.add(new RangeValidator.RangeValidatorBuilder()
+    protected Map<String, DataValidator> getValidations() {
+        Map<String, DataValidator> validatorList = new HashMap<>();
+        validatorList.put(AGE, new RangeValidator.RangeValidatorBuilder()
                 .valueToValidate(user.getAge())
                 .greaterThan(18)
                 .errorMessage("The age must be greater that 18 years old.")
                 .build());
-        validatorList.add(new CompoundValidator()
+        validatorList.put(NAME, new CompoundValidator()
                 .addDataValidator(new RequiredValidator.RequiredValidatorBuilder()
                         .valueToValidate(user.getName())
                         .errorMessage("The name is required.")
